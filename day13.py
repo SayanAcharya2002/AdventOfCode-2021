@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import collections as clc
 import sys
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 file_name=sys.argv[1]
 file=open(file_name,"r")

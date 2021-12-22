@@ -13,7 +13,6 @@
 //ignore the comments, a lot of logging is there. Took me a long time to debug this monster. Though i optimized as much as i could, still it takes mammoth amount of time to run.
 //Dont know what i could do better. Feel free to let me know.
 
-
 using namespace std;
 
 bool is_overlapping(int x1,int x2,int x3,int x4)
@@ -145,12 +144,12 @@ void func(T& mappa,vector<pair<int,int>> v,int on,int depth)
   bool anything_to_do=true;
   auto value=v[0];
   // cout<<"came"<<"\n";
-  // auto it=mappa.lower_bound(value);
-  // if(it!=mappa.begin())
-  // {
-  //   it--;
-  // }
-  auto it=mappa.begin();
+  auto it=mappa.lower_bound(value);
+  if(it!=mappa.begin())
+  {
+    it--;
+  }
+  // auto it=mappa.begin();
   T add_mappa;
   set<pair<int,int>> delete_mappa;
   while(it!=mappa.end() && value.second>=it->first.first)//check this stuff
@@ -366,8 +365,8 @@ int main(int argc,char** argv)
     index++;
     if(validate(val.second))
       func(mappa,val.second,val.first,0);
-    cout<<"counting: "<<count_total(mappa)<<"\n";
+    // cout<<"counting: "<<count_total(mappa)<<"\n";
   }
-  
+  cout<<"counting: "<<count_total(mappa)<<"\n";
 }
 

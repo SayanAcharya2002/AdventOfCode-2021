@@ -13,9 +13,10 @@
 //ignore the comments, a lot of logging is there. Took me a long time to debug this monster. Though i optimized as much as i could, still it takes mammoth amount of time to run.
 //Dont know what i could do better. Feel free to let me know.
 
+
 using namespace std;
 
-bool is_overlapping(int x1,int x2,int x3,int x4)
+inline bool is_overlapping(int x1,int x2,int x3,int x4)
 {
   if(x1>x2 || x3>x4)
   {
@@ -57,7 +58,7 @@ struct stuff{
   }
 };
 
-stuff split_ranges(int patx1,int patx2,int x1,int x2)
+inline stuff split_ranges(int patx1,int patx2,int x1,int x2)
 {
   if(!is_overlapping(patx1,patx2,x1,x2)) 
   {
@@ -113,7 +114,7 @@ stuff split_ranges(int patx1,int patx2,int x1,int x2)
 }
 
 template<class T>
-vector<T> vector_slice(vector<T> v,int a,int b=-1)
+inline vector<T> vector_slice(vector<T> v,int a,int b=-1)
 {
   vector<T> ans;
   if(b==-1)
@@ -127,14 +128,14 @@ vector<T> vector_slice(vector<T> v,int a,int b=-1)
   return ans;
 }
 
-void func(int& mappa,vector<pair<int,int>> v,int on, int depth)
+inline void func(int& mappa,vector<pair<int,int>> v,int on, int depth)
 {
   if(!mappa)
     mappa=1+on;
 }
 
 template<class T>
-void func(T& mappa,vector<pair<int,int>> v,int on,int depth)
+void func(T& mappa,const vector<pair<int,int>>& v,int on,int depth)
 {
   // if(depth==3)//check value here
   // {
@@ -142,7 +143,8 @@ void func(T& mappa,vector<pair<int,int>> v,int on,int depth)
   //   return;
   // }
   bool anything_to_do=true;
-  auto value=v[0];
+  // auto value=v[0];
+  auto value=v[depth];
   // cout<<"came"<<"\n";
   auto it=mappa.lower_bound(value);
   if(it!=mappa.begin())
@@ -171,12 +173,14 @@ void func(T& mappa,vector<pair<int,int>> v,int on,int depth)
     }
     for(auto& t:stuff_ans.pat)
     {
-      add_mappa[t];
-      func(add_mappa[t],vector_slice(v,1),on,depth+1);
+      // add_mappa[t];
+      // func(add_mappa[t],vector_slice(v,1),on,depth+1);
+      func(add_mappa[t],v,on,depth+1);
     }
     for(auto& t:stuff_ans.both)
     {
-      func(add_mappa[t],vector_slice(v,1),on,depth+1);
+      // func(add_mappa[t],vector_slice(v,1),on,depth+1);
+      func(add_mappa[t],v,on,depth+1);
     }
 
     if(stuff_ans.protrude.size())
@@ -191,8 +195,9 @@ void func(T& mappa,vector<pair<int,int>> v,int on,int depth)
   }
   if(anything_to_do)
   {
-    add_mappa[value];
-    func(add_mappa[value],vector_slice(v,1),on,depth+1);
+    // add_mappa[value];
+    // func(add_mappa[value],vector_slice(v,1),on,depth+1);
+    func(add_mappa[value],v,on,depth+1);
   }
 
   //cleaning the map
@@ -202,7 +207,7 @@ void func(T& mappa,vector<pair<int,int>> v,int on,int depth)
   }
   for(auto& t:add_mappa)
   {
-    mappa[t.first]=t.second;
+    mappa[t.first]=move(t.second);
   }
 }
 template<class T>
@@ -361,7 +366,7 @@ int main(int argc,char** argv)
   int index=0;
   for(auto& val:val_vec)
   {
-    cout<<"indexing: "<<index<<"\n";
+    // cout<<"indexing: "<<index<<"\n";
     index++;
     if(validate(val.second))
       func(mappa,val.second,val.first,0);
